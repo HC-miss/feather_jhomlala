@@ -21,16 +21,18 @@ class ForecastPage extends GetView<ForecastController> {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            key: const Key("weather_main_screen_container"),
-            decoration: BoxDecoration(gradient: gradient),
-            child: WeatherForecastWidget(
-              holder: controller.holder,
-              width: 300,
-              height: 150,
-              isMetricUnits: SettingService.to.isMetricUnits,
-            ),
-          ),
+          Obx(() {
+            return Container(
+              key: const Key("weather_main_screen_container"),
+              decoration: BoxDecoration(gradient: gradient),
+              child: WeatherForecastWidget(
+                holder: controller.holder,
+                width: 300,
+                height: 150,
+                isMetricUnits: SettingService.to.isMetricUnits,
+              ),
+            );
+          }),
           TransparentAppBar(
             withPopupMenu: true,
             onPopupMenuClicked: controller.onMenuElementClicked,

@@ -5,6 +5,7 @@ import 'package:feather_jhomlala/data/model/remote/weather_response.dart';
 import 'package:feather_jhomlala/data/services/setting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 import '../modules/main/widgets/weather_forecast_thumbnail_list_widget.dart';
 import 'animated_state.dart';
@@ -24,15 +25,17 @@ class CurrentWeatherWidget extends StatefulWidget {
 class _CurrentWeatherWidgetState extends AnimatedState<CurrentWeatherWidget> {
   @override
   Widget build(BuildContext context) {
-    return buildWeatherContainer(
-      widget.weatherResponse!,
-      widget.forecastListResponse!,
-    );
+    return Obx(() {
+      return buildWeatherContainer(
+        widget.weatherResponse!,
+        widget.forecastListResponse!,
+      );
+    });
   }
 
   String _getWeatherImage(WeatherResponse weatherResponse) {
     final OverallWeatherData overallWeatherData =
-        weatherResponse.overallWeatherData![0];
+    weatherResponse.overallWeatherData![0];
     final int code = overallWeatherData.id!;
     return WeatherHelper.getWeatherIcon(code);
   }
@@ -70,37 +73,47 @@ class _CurrentWeatherWidgetState extends AnimatedState<CurrentWeatherWidget> {
         children: [
           TextSpan(
             text: "${applicationLocalization.pressure}: ",
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyLarge,
           ),
           TextSpan(
             text: WeatherHelper.formatPressure(
               weatherResponse.mainWeatherData!.pressure,
               isMetricUnits,
             ),
-            style: Theme.of(context).textTheme.titleSmall,
+            style: Theme
+                .of(context)
+                .textTheme
+                .titleSmall,
           ),
           const TextSpan(
             text: "  ",
           ),
           TextSpan(
             text: "${applicationLocalization.humidity}: ",
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyLarge,
           ),
           TextSpan(
             text: WeatherHelper.formatHumidity(
               weatherResponse.mainWeatherData!.humidity,
             ),
-            style: Theme.of(context).textTheme.titleSmall,
+            style: Theme
+                .of(context)
+                .textTheme
+                .titleSmall,
           )
         ],
       ),
     );
   }
 
-  Widget buildWeatherContainer(
-    WeatherResponse response,
-    WeatherForecastListResponse weatherForecastListResponse,
-  ) {
+  Widget buildWeatherContainer(WeatherResponse response,
+      WeatherForecastListResponse weatherForecastListResponse,) {
     var currentTemperature = response.mainWeatherData!.temp;
 
     if (!SettingService.to.isMetricUnits) {
@@ -126,7 +139,8 @@ class _CurrentWeatherWidgetState extends AnimatedState<CurrentWeatherWidget> {
               Text(
                 key: const Key("weather_current_widget_temperature"),
                 textDirection: TextDirection.ltr,
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .headlineSmall
                     ?.copyWith(color: Colors.white),
@@ -140,7 +154,10 @@ class _CurrentWeatherWidgetState extends AnimatedState<CurrentWeatherWidget> {
                 _getMaxMinTemperatureRow(response),
                 key: const Key("weather_current_widget_min_max_temperature"),
                 textDirection: TextDirection.ltr,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleSmall,
               ),
               const SizedBox(height: 4),
               _getPressureAndHumidityRow(response),
