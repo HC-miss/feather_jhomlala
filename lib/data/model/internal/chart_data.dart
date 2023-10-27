@@ -5,6 +5,7 @@ import 'package:feather_jhomlala/core/utils/weather_helper.dart';
 import 'package:feather_jhomlala/data/model/internal/chart_line.dart';
 import 'package:feather_jhomlala/data/model/remote/weather_forecast_response.dart';
 
+import 'point.dart';
 import 'weather_forecast_holder.dart';
 
 class ChartData {

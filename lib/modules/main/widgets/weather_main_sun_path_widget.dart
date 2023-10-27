@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:feather_jhomlala/core/utils/app_logger.dart';
 import 'package:feather_jhomlala/core/utils/date_time_helper.dart';
 import 'package:feather_jhomlala/core/utils/weather_helper.dart';
 import 'package:feather_jhomlala/data/model/remote/system.dart';

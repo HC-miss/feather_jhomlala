@@ -1,0 +1,112 @@
+import 'package:feather_jhomlala/core/utils/weather_helper.dart';
+import 'package:feather_jhomlala/core/values/app_assets.dart';
+import 'package:feather_jhomlala/data/model/internal/chart_data.dart';
+import 'package:feather_jhomlala/data/model/internal/point.dart';
+import 'package:feather_jhomlala/data/model/internal/weather_forecast_holder.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'weather_forecast_base_page.dart';
+
+class WeatherForecastWindPage extends WeatherForecastBasePage {
+  const WeatherForecastWindPage(
+    WeatherForecastHolder? holder,
+    double? width,
+    double? height,
+    bool isMetricUnits, {
+    Key? key,
+  }) : super(
+          holder: holder,
+          width: width,
+          height: height,
+          isMetricUnits: isMetricUnits,
+          key: key,
+        );
+
+  @override
+  Widget getBottomRowWidget(BuildContext context) {
+    final List<Widget> rowElements = [];
+    final List<Point> points = getChartData().points!;
+
+    if (points.length > 2) {
+      final double padding = points[1].x - points[0].x - 30;
+      for (final String direction in holder!.getWindDirectionList()) {
+        rowElements.add(
+          SizedBox(
+            width: 30,
+            child: Center(
+              child: Text(
+                direction,
+                textDirection: TextDirection.ltr,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ),
+        );
+        rowElements.add(SizedBox(width: padding));
+      }
+      rowElements.removeLast();
+    }
+
+    return Row(
+      key: const Key("weather_forecast_wind_page_bottom_row"),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: rowElements,
+    );
+  }
+
+  @override
+  ChartData getChartData() {
+    return super.holder!.setupChartData(
+          ChartDataType.wind,
+          width!,
+          height!,
+          isMetricUnits,
+        );
+  }
+
+  @override
+  String getIcon() {
+    return AppAssetsImages.iconWindPng;
+  }
+
+  @override
+  RichText getPageSubtitleWidget(BuildContext context) {
+    var minWind = holder!.minWind;
+    var maxWind = holder!.maxWind;
+    if (isMetricUnits) {
+      minWind =
+          WeatherHelper.convertMetersPerSecondToKilometersPerHour(minWind);
+      maxWind =
+          WeatherHelper.convertMetersPerSecondToKilometersPerHour(maxWind);
+    } else {
+      minWind = WeatherHelper.convertMetersPerSecondToMilesPerHour(minWind);
+      maxWind = WeatherHelper.convertMetersPerSecondToMilesPerHour(maxWind);
+    }
+
+    return RichText(
+      key: const Key("weather_forecast_wind_page_subtitle"),
+      textDirection: TextDirection.ltr,
+      text: TextSpan(
+        children: [
+          TextSpan(text: 'min ', style: Theme.of(context).textTheme.bodyLarge),
+          TextSpan(
+            text: WeatherHelper.formatWind(minWind, isMetricUnits),
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          TextSpan(
+              text: '   max ', style: Theme.of(context).textTheme.bodyLarge),
+          TextSpan(
+            text: WeatherHelper.formatWind(maxWind, isMetricUnits),
+            style: Theme.of(context).textTheme.titleSmall,
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  String? getTitleText(BuildContext context) {
+    return AppLocalizations.of(context)!.pressure;
+  }
+}
