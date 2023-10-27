@@ -15,7 +15,7 @@
   "sunset": "日落",
   "sunrise": "日出",
   "sunset_in": "日落时分",
-  "sunrise_in": "日出时",
+  "sunrise_in": "日出时分",
   "night": "晚上",
   "chart_unavailable": "图表不可用",
   "retry": "重试",

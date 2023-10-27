@@ -17,6 +17,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 import 'main_controller.dart';
+import '../../widgets/current_weather_widget.dart';
+import 'widgets/weather_main_sun_path_widget.dart';
 
 class MainPage extends GetView<MainController> {
   const MainPage({Key? key}) : super(key: key);
@@ -58,10 +60,11 @@ class MainPage extends GetView<MainController> {
             ],
           );
         },
-        onLoading: Stack(
+        onLoading: const Stack(
+          key: Key('main_screen_loading_widget'),
           children: [
-            const AnimatedGradientWidget(),
-            const LoadingWidget(),
+            AnimatedGradientWidget(),
+            LoadingWidget(),
           ],
         ),
       ),
@@ -120,16 +123,14 @@ class MainPage extends GetView<MainController> {
     } else {
       Widget page;
       if (key == Constant.mainWeatherPage) {
-        // page = CurrentWeatherWidget(
-        //   weatherResponse: response,
-        //   forecastListResponse: weatherForecastListResponse,
-        // );
-        page = Text('1');
+        page = CurrentWeatherWidget(
+          weatherResponse: response,
+          forecastListResponse: weatherForecastListResponse,
+        );
       } else if (key == Constant.weatherMainSunPathPage) {
-        // page = WeatherMainSunPathWidget(
-        //   system: response.system,
-        // );
-        page = Text('2');
+        page = WeatherMainSunPathWidget(
+          system: response.system,
+        );
       } else {
         Log.e("Unsupported key: $key");
         page = const SizedBox();
@@ -139,13 +140,20 @@ class MainPage extends GetView<MainController> {
     }
   }
 
-  Widget _buildSwiperWidget(WeatherResponse weatherResponse,
-      WeatherForecastListResponse forecastListResponse) {
+  Widget _buildSwiperWidget(
+    WeatherResponse weatherResponse,
+    WeatherForecastListResponse forecastListResponse,
+  ) {
     return Swiper(
+      physics: BouncingScrollPhysics(),
+      // 动态显示页面 会使每一个页面重建 利用缓存来优化对应页面实例化
       itemBuilder: (BuildContext context, int index) {
         if (index == 0) {
           return _getPage(
-              Constant.mainWeatherPage, weatherResponse, forecastListResponse);
+            Constant.mainWeatherPage,
+            weatherResponse,
+            forecastListResponse,
+          );
         } else {
           return _getPage(
             Constant.weatherMainSunPathPage,
@@ -176,7 +184,7 @@ class MainPage extends GetView<MainController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildErrorWidget(text, () {
-          // _mainScreenBloc.add(LocationCheckMainScreenEvent());
+          controller.locationInit();
         }),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

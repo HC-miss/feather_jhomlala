@@ -47,8 +47,8 @@ class MainController extends GetxController with StateMixin<MainState> {
   void _setupRefreshTimer() {
     Log.i("Setup refresh data timer");
     _refreshTimer?.cancel();
-    // todo 用户指定时间
-    const duration = Duration(minutes: 30);
+    int refreshTime = applicationLocalRepository.getSavedRefreshTime();
+    var duration = Duration(milliseconds: refreshTime);
     // 定时刷新数据
     _refreshTimer = Timer(duration, () {
       selectWeatherData();
@@ -73,20 +73,18 @@ class MainController extends GetxController with StateMixin<MainState> {
     }
   }
 
-  Future<WeatherResponse?> _fetchWeather(
-    double? latitude,
-    double? longitude,
-  ) async {
+  Future<WeatherResponse?> _fetchWeather(double? latitude,
+      double? longitude,) async {
     Log.i("Fetch weather");
     final WeatherResponse weatherResponse =
-        await weatherRemoteRepository.fetchWeather(latitude, longitude);
+    await weatherRemoteRepository.fetchWeather(latitude, longitude);
     if (weatherResponse.errorCode == null) {
       weatherLocalRepository.saveWeather(weatherResponse);
       return weatherResponse;
     } else {
       Log.i("Selected weather from storage");
       final WeatherResponse? weatherResponseStorage =
-          await weatherLocalRepository.getWeather();
+      await weatherLocalRepository.getWeather();
       if (weatherResponseStorage != null) {
         return weatherResponseStorage;
       } else {
@@ -95,19 +93,17 @@ class MainController extends GetxController with StateMixin<MainState> {
     }
   }
 
-  Future<WeatherForecastListResponse?> _fetchWeatherForecast(
-    double? latitude,
-    double? longitude,
-  ) async {
+  Future<WeatherForecastListResponse?> _fetchWeatherForecast(double? latitude,
+      double? longitude,) async {
     //lastRequestTime = DateTime.now().millisecondsSinceEpoch;
 
     WeatherForecastListResponse weatherForecastResponse =
-        await weatherRemoteRepository.fetchWeatherForecast(latitude, longitude);
+    await weatherRemoteRepository.fetchWeatherForecast(latitude, longitude);
     if (weatherForecastResponse.errorCode == null) {
       weatherLocalRepository.saveWeatherForecast(weatherForecastResponse);
     } else {
       final WeatherForecastListResponse? weatherForecastResponseStorage =
-          await weatherLocalRepository.getWeatherForecast();
+      await weatherLocalRepository.getWeatherForecast();
       if (weatherForecastResponseStorage != null) {
         weatherForecastResponse = weatherForecastResponseStorage;
         //_logger.info("Using weather forecast data from storage");
@@ -137,8 +133,8 @@ class MainController extends GetxController with StateMixin<MainState> {
       // );
 
       var [
-        weatherResponse as WeatherResponse?,
-        weatherForecastListResponse as WeatherForecastListResponse?
+      weatherResponse as WeatherResponse?,
+      weatherForecastListResponse as WeatherForecastListResponse?
       ] = await Future.wait(
         [
           _fetchWeather(
@@ -202,7 +198,7 @@ class MainController extends GetxController with StateMixin<MainState> {
     if (permissionCheck == LocationPermission.denied) {
       // 申请位置权限
       final permissionRequest =
-          await locationRepository.requestLocationPermission();
+      await locationRepository.requestLocationPermission();
 
       if (permissionRequest == LocationPermission.always ||
           permissionRequest == LocationPermission.whileInUse) {

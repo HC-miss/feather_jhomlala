@@ -175,7 +175,7 @@ class AppLocalProvider {
   Future<bool> saveWeatherForecast(WeatherForecastListResponse response) async {
     try {
       Log.d("Store weather forecast ${json.encode(response)}");
-      final result = storageService.setString(
+      final result = await storageService.setString(
           Constant.storageWeatherForecastKey, json.encode(response));
       Log.d("Saved with result: $result");
       return result;

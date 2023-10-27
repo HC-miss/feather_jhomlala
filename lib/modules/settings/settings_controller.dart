@@ -1,6 +1,7 @@
 import 'package:feather_jhomlala/data/model/internal/overflow_menu_element.dart';
 import 'package:feather_jhomlala/data/model/internal/unit.dart';
 import 'package:feather_jhomlala/data/repositories/app_local_repository.dart';
+import 'package:feather_jhomlala/data/services/setting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,12 +24,13 @@ class SettingsController extends GetxController with StateMixin<SettingsState> {
     final lastRefreshedTime = appLocalRepository.getLastRefreshTime();
 
     change(
-        SettingsState(
-          unit: unit,
-          refreshTime: savedRefreshTime,
-          lastRefreshTime: lastRefreshedTime,
-        ),
-        status: RxStatus.success());
+      SettingsState(
+        unit: unit,
+        refreshTime: savedRefreshTime,
+        lastRefreshTime: lastRefreshedTime,
+      ),
+      status: RxStatus.success(),
+    );
   }
 
   void onChangedUnitState(bool state) {
@@ -39,6 +41,9 @@ class SettingsController extends GetxController with StateMixin<SettingsState> {
       unit = Unit.metric;
     }
     appLocalRepository.saveUnit(unit);
+
+    // 更新全局设置
+    SettingService.to.unit.value = unit;
 
     if (status.isSuccess) {
       // 会刷新页面
@@ -61,6 +66,9 @@ class SettingsController extends GetxController with StateMixin<SettingsState> {
     }
 
     appLocalRepository.saveRefreshTime(selectedRefreshTime);
+
+    // 更新全局设置
+    SettingService.to.refreshTime.value = selectedRefreshTime;
 
     if (status.isSuccess) {
       // 会刷新页面

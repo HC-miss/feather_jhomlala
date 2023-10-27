@@ -32,7 +32,7 @@ class FeatherApp extends StatelessWidget {
         // 国际化支持-代理
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        locale: Locale('zh', 'cn'),
+        // locale: Locale('zh', 'cn'),
         debugShowCheckedModeBanner: false,
       ),
     );
