@@ -9,4 +9,11 @@
             android:gravity="center"
             android:src="@mipmap/launch_image" />
     </item> -->
+
+    <item android:width="300dp"
+        android:height="300dp"
+        android:gravity="center">
+        <bitmap
+            android:src="@drawable/feather_loading" />
+    </item>
 </layer-list>

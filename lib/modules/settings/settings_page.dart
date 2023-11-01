@@ -1,4 +1,3 @@
-import 'package:feather_jhomlala/core/utils/app_logger.dart';
 import 'package:feather_jhomlala/data/model/internal/overflow_menu_element.dart';
 import 'package:feather_jhomlala/data/model/internal/unit.dart';
 import 'package:feather_jhomlala/widgets/animated_gradient.dart';

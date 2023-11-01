@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:feather_jhomlala/core/utils/weather_helper.dart';
 import 'package:feather_jhomlala/data/model/internal/weather_forecast_holder.dart';
 import 'package:feather_jhomlala/data/model/remote/system.dart';

@@ -1,4 +1,3 @@
-import 'package:feather_jhomlala/core/utils/app_logger.dart';
 import 'package:feather_jhomlala/data/services/setting_service.dart';
 import 'package:feather_jhomlala/widgets/transparent_app_bar.dart';
 import 'package:feather_jhomlala/widgets/widget_helper.dart';

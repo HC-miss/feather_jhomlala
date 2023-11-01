@@ -19,3 +19,8 @@ samples, guidance on mobile development, and a full API reference.
 
 #### 生成国际化代码
 参考https://juejin.cn/post/7211348566396338236
+
+#### 构建命令
+```cmd
+flutter build apk --split-per-abi --obfuscate --split-debug-info=./app.symbols
+```
